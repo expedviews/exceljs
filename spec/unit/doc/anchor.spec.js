@@ -18,9 +18,8 @@ describe('Anchor', () => {
       worksheet.addColumn(anchor.nativeCol + 1, {
         width: 10,
       });
-      expect(anchor.colWidth).to.equal(
-        worksheet.getColumn(anchor.nativeCol + 1).width * 10000
-      );
+      // width 10 characters = 75px (10 * 7 + 5) at 9525 EMU per pixel
+      expect(anchor.colWidth).to.equal(75 * 9525);
     });
   });
   describe('rowHeight', () => {
@@ -37,7 +36,8 @@ describe('Anchor', () => {
       worksheet.getRow(1).height = 10;
 
       const anchor = new Anchor(worksheet);
-      expect(anchor.rowHeight).to.equal(worksheet.getRow(1).height * 10000);
+      // 10pt = 127000 EMU (12700 EMU per point)
+      expect(anchor.rowHeight).to.equal(127000);
     });
   });
   describe('resize worksheet`s cells', () => {
@@ -54,7 +54,9 @@ describe('Anchor', () => {
       const pre = context.anchor.colWidth;
       context.worksheet.getColumn(1).width *= 2;
       expect(context.anchor.colWidth).to.not.equal(pre);
-      expect(context.anchor.colWidth).to.equal(pre * 2);
+      // 20 -> 145px, 40 -> 285px
+      expect(pre).to.equal(145 * 9525);
+      expect(context.anchor.colWidth).to.equal(285 * 9525);
     });
     it('should update rowHeight', () => {
       const pre = context.anchor.rowHeight;
@@ -123,6 +125,24 @@ describe('Anchor', () => {
       const pre = context.anchor.nativeRowOff;
       context.anchor.row -= 0.321;
       expect(context.anchor.nativeColOff).to.not.equal(pre);
+    });
+  });
+  describe('fractional column offsets', () => {
+    it('should place col 1.5 in the middle of a wide custom-width column', () => {
+      const worksheet = createSheetMock();
+      worksheet.getColumn(2).width = 100;
+      const anchor = new Anchor(worksheet, {col: 1.5, row: 0});
+      expect(anchor.nativeCol).to.equal(1);
+      // column B is 705px wide, so the middle is 352.5px = 3357562 EMU
+      expect(anchor.nativeColOff).to.equal(Math.floor(705 * 9525 * 0.5));
+      expect(anchor.col).to.be.closeTo(1.5, 0.001);
+    });
+    it('should place row 1.5 in the middle of a custom-height row', () => {
+      const worksheet = createSheetMock();
+      worksheet.getRow(2).height = 40;
+      const anchor = new Anchor(worksheet, {col: 0, row: 1.5});
+      expect(anchor.nativeRow).to.equal(1);
+      expect(anchor.nativeRowOff).to.equal(Math.floor(40 * 12700 * 0.5));
     });
   });
 });
