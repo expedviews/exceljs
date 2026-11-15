@@ -185,6 +185,23 @@ const expectations = [
     options: {hyperlinkMap: fakeHyperlinkMap, styles: fakeStyles},
   },
   {
+    title: 'Inline String with text followed by rich text runs (#3079)',
+    create() {
+      return new CellXform();
+    },
+    xml:
+      '<c r="A1" t="inlineStr"><is><t>xy</t><r><rPr><b/></rPr><t>bold</t></r></is></c>',
+    parsedModel: {
+      address: 'A1',
+      type: Enums.ValueType.String,
+      value: {
+        richText: [{text: 'xy'}, {font: {bold: true}, text: 'bold'}],
+      },
+    },
+    tests: ['parse'],
+    options: {hyperlinkMap: fakeHyperlinkMap, styles: fakeStyles},
+  },
+  {
     title: 'Shared String',
     create() {
       return new CellXform();
