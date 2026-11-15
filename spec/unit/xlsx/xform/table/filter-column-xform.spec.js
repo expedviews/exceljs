@@ -50,6 +50,28 @@ const expectations = [
     tests: ['prepare', 'render', 'renderIn', 'parse'],
     options: {index: 0},
   },
+  {
+    title: 'with dynamic filter (#2972)',
+    create() {
+      return new FilterColumnXform();
+    },
+    initialModel: {
+      filterButton: true,
+      dynamicFilter: {type: 'aboveAverage', val: '14.5', maxVal: '19'},
+    },
+    preparedModel: {
+      colId: '1',
+      filterButton: true,
+      dynamicFilter: {type: 'aboveAverage', val: '14.5', maxVal: '19'},
+    },
+    xml:
+      '<filterColumn colId="1" hiddenButton="0"><dynamicFilter type="aboveAverage" val="14.5" maxVal="19"/></filterColumn>',
+    get parsedModel() {
+      return this.initialModel;
+    },
+    tests: ['prepare', 'render', 'renderIn', 'parse'],
+    options: {index: 1},
+  },
 ];
 
 describe('FilterColumnXform', () => {
