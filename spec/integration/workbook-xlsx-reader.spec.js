@@ -331,7 +331,7 @@ describe('WorkbookReader', () => {
 
           if (col.isCustomWidth) {
             expect(image.range.tl.colWidth).to.equal(
-              Math.floor(col.width * 10000)
+              Math.floor(Math.round((col.width * 7) + 5) * 9525)
             );
           } else {
             expect(image.range.tl.colWidth).to.equal(640000);
@@ -346,7 +346,7 @@ describe('WorkbookReader', () => {
 
           if (row.height) {
             expect(image.range.tl.rowHeight).to.equal(
-              Math.floor(row.height * 10000)
+              Math.floor(row.height * 12700)
             );
           } else {
             expect(image.range.tl.rowHeight).to.equal(180000);
@@ -378,7 +378,7 @@ describe('WorkbookReader', () => {
 
           if (col.isCustomWidth) {
             expect(image.range.br.colWidth).to.equal(
-              Math.floor(col.width * 10000)
+              Math.floor(Math.round((col.width * 7) + 5) * 9525)
             );
           } else {
             expect(image.range.br.colWidth).to.equal(640000);
@@ -393,7 +393,7 @@ describe('WorkbookReader', () => {
 
           if (row.height) {
             expect(image.range.br.rowHeight).to.equal(
-              Math.floor(row.height * 10000)
+              Math.floor(row.height * 12700)
             );
           } else {
             expect(image.range.br.rowHeight).to.equal(180000);
