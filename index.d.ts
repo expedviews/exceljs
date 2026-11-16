@@ -1487,7 +1487,7 @@ export interface Xlsx {
 	 * load from an array buffer
 	 * @param buffer
 	 */
-	load(buffer: Buffer, options?: Partial<XlsxReadOptions>): Promise<Workbook>;
+	load(buffer: Buffer | ArrayBuffer | Uint8Array, options?: Partial<XlsxReadOptions>): Promise<Workbook>;
 
 	/**
 	 * write to a buffer
