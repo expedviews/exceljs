@@ -78,6 +78,20 @@ const expectations = [
     },
     tests: ['render', 'parse'],
   },
+  {
+    title: 'defaults applied when cfvo is missing',
+    create() {
+      return new DatabarExtXform();
+    },
+    preparedModel: {},
+    xml: `
+      <x14:dataBar minLength="0" maxLength="100">
+        <x14:cfvo type="min" />
+        <x14:cfvo type="max" />
+      </x14:dataBar>
+    `,
+    tests: ['render'],
+  },
 ];
 
 describe('DatabarExtXform', () => {
